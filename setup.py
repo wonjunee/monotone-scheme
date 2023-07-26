@@ -7,6 +7,7 @@ import sys
 
 __version__ = "0.0.1"
 
+
 ext_modules = [
     Pybind11Extension("monotone",
         ["src/main.cpp"],
@@ -25,6 +26,7 @@ setup(
         (the details will be added)
         """,
     long_description_content_type="text/markdown",
+    url="https://github.com/wonjunee/monotone-scheme",
     ext_modules=ext_modules,
     cmdclass={"build_ext": build_ext},
     zip_safe=False,
