@@ -1,3 +1,5 @@
 *.png
 *.npy
 *.DS_Store
+*.so
+*.o
