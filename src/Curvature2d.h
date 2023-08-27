@@ -1,3 +1,7 @@
+/**
+ * Monotone scheme to solve the mean curvature PDEs in 2D Cartesian grids.
+*/
+
 #ifndef CURVATURE2D_H
 #define CURVATURE2D_H
 
@@ -74,15 +78,15 @@ public:
         stencils_norm_.resize(st_N_);
 
         // converting from int* -> vector<vector<int>>
-        int dim = 3;
+        const int dim = 2;
         for(int it=0;it<st_N_;++it){
-            stencils_[it].resize(dim); // 3d vector e.g. {0,0,1}
+            stencils_[it].resize(dim); // 2d vector e.g. {0,1}
             double norm_val = 0;
             for(int it1=0;it1<dim;++it1){
                 stencils_[it][it1] = stencils[it*dim + it1];
                 norm_val += stencils_[it][it1] * stencils_[it][it1];
             }
-            stencils_norm_[it] = sqrt(norm_val) / n_;
+            stencils_norm_[it] = sqrt(norm_val);
         }
 
         py::print("Constructor finished. n: ", n_, "stencil size: ", st_size, "number of stencils: ", stencils_.size());
@@ -99,26 +103,24 @@ public:
      * @param utmp : DoubleArray2D for the solution
      * @param d    : size_t. The index for stencils_
      * @param c    : the value at u(k,i,j)
-     * @param k,i,j: the indices
+     * @param i,j: the indices i: y-aixs j: x-axis
      * @return true if stencils_[d] is in subdifferential set.
     */
-    bool p_in_subdifferential(const DoubleArray2D& utmp, const size_t& d, const double c, const int k, const int i, const int j) const{
-        int kp = k - stencils_[d][2];
+    bool p_in_subdifferential(const DoubleArray2D& utmp, const size_t& d, const double c, const int i, const int j) const{
         int ip = i - stencils_[d][1];
         int jp = j - stencils_[d][0];
-        if(check_inside_domain(kp,ip,jp)){
-            if(utmp(kp,ip,jp) > c){
+        if(check_inside_domain(ip,jp)){
+            if(utmp(ip,jp) > c){
                 return false;
             }
         }
 
         for(int it=0, N_it=stencils_.size(); it<N_it; ++it){ // dir = {x, y}
-            int kp = k - stencils_[it][2];
             int ip = i - stencils_[it][1];
             int jp = j - stencils_[it][0];
-            if(check_inside_domain(kp,ip,jp)){
+            if(check_inside_domain(ip,jp)){
                 if(dot(stencils_[it], stencils_[d]) > 0){
-                    if(utmp(kp,ip,jp) > c){
+                    if(utmp(ip,jp) > c){
                         return false;
                     }
                 }
@@ -133,18 +135,17 @@ public:
      * with respect to the direction q at the location x=(k,i,j).
      * It will return $-\Delta u = (-u(x-q) + 2u(x) - u(x+q))/h^2$.
     */
-    double compute_second_derivative_given_p(const DoubleArray2D& utmp, vector<int>& q, const double c, const int k, const int i, const int j) const{
-        int km = k-q[2]; int kp = k+q[2];
+    double compute_second_derivative_given_p(const DoubleArray2D& utmp, vector<int>& q, const double c, const int i, const int j) const{
         int im = i-q[1]; int ip = i+q[1];
         int jm = j-q[0]; int jp = j+q[0];
         double umm = 0;
         double upp = 0;
         
-        if(check_inside_domain(kp,ip,jp)){
-            upp = utmp(kp,ip,jp);
+        if(check_inside_domain(ip,jp)){
+            upp = utmp(ip,jp);
         }
-        if(check_inside_domain(km,im,jm)){
-            umm = utmp(km,im,jm);
+        if(check_inside_domain(im,jm)){
+            umm = utmp(im,jm);
         }
         double h2 = dot(q,q)/(n_*n_); // norm of p : |p| * (dx^2)
         return (- umm + 2.0 * c - upp) / h2;
@@ -155,36 +156,24 @@ public:
      */
     double calc_val_affine(const DoubleArray2D& utmp, const DoubleArray2D& f, const double c, const int ind){
         double max_val = -1e4;
-
-        int k = ind / (n_*n_);
-        int i = (ind % (n_*n_)) / n_;
-        int j = (ind % (n_*n_)) % n_;
+        int i = ind / n_;
+        int j = ind % n_;
 
         for(size_t d=0, N_d=stencils_.size(); d<N_d; ++d){ // dir = {x, y}
             // choose a eligible vector from stencils
-            if(p_in_subdifferential(utmp,d,c,k,i,j)){
+            if(p_in_subdifferential(utmp,d,c,i,j)){
                 vector<int> p = stencils_[d];
-                vector<int> q1 = {-p[1], p[0],0};
-                vector<int> q2 = {-p[2],    0,p[0]};
-                // q1,q2 = orthogonal to p
-                if(p[0] == 0 && p[1] == 0){
-                    q1 = {1,0,0};
-                    q2 = {0,1,0};
-                }
-                if(p[0] == 0 && p[2] == 0){
-                    q1 = {1,0,0};
-                    q2 = {0,0,1};
-                }
-                double val = compute_second_derivative_given_p(utmp, q1, c, k, i, j)
-                            +compute_second_derivative_given_p(utmp, q2, c, k, i, j);
+                vector<int> q = {-p[1], p[0]}; // q is perpendicular to p
+
+                double val = compute_second_derivative_given_p(utmp, q, c, i, j);
                 if(val > max_val){ max_val = val; }
             }
         }
         return max_val - f(ind);
     }
 
-    inline bool check_inside_domain(const int k, const int i, const int j) const{
-        return k>=0 && k<n_ && i>=0 && i<n_ && j>=0 && j<n_;
+    inline bool check_inside_domain(const int i, const int j) const{
+        return i>=0 && i<n_ && j>=0 && j<n_;
     }
 
     /**
@@ -198,8 +187,8 @@ public:
     */
     double calc_u_bisection_affine(const DoubleArray2D& utmp, const DoubleArray2D& f, const int ind, double& val){
         // py::print("inside the bisection function\n");
-        double a = 0;
-        double b = 1;
+        double a = 0.0;
+        double b = 1.0;
         double c = (a+b)*0.5;
         val = 0;
         for(size_t i_bi=0; i_bi<max_it_bisection_; ++i_bi){
@@ -257,29 +246,29 @@ public:
         }
 
         // set the maximum number of iterations of the bisection method
-        double tol_bisection = 1e-5;
+        double tol_bisection = 1e-6;
         max_it_bisection_    = -log(tol_bisection)/log(2);
         
         DoubleArray2D out(out_dbl,n);
 
-        for(int ind=0;ind<n_*n_*n_;++ind){
+        for(int ind=0;ind<n_*n_;++ind){
             u_(ind) = out(ind);
         }
            
         // run the iterations  
-        // double error = compute_for_loop_affine(utmp,f,0,n_*n_*n_);
+        // double error = compute_for_loop_affine(utmp,f,0,n_*n_);
         double error = 0;
         std::vector<std::future<double> > changes(THREADS_);    
         for(int th=0;th<THREADS_;++th){  
-            changes[th] = std::async(std::launch::async, &Curv2DSolver::compute_for_loop_affine, this, static_cast<int>(th*n_*n_*n_/THREADS_), static_cast<int>((th+1)*n_*n_*n_/THREADS_));
+            changes[th] = std::async(std::launch::async, &Curv2DSolver::compute_for_loop_affine, this, static_cast<int>(th*n_*n_/THREADS_), static_cast<int>((th+1)*n_*n_/THREADS_));
         }
         for(int th=0;th<THREADS_;++th){
             error += changes[th].get();
         } 
-        for(int ind=0;ind<n_*n_*n_;++ind){
+        for(int ind=0;ind<n_*n_;++ind){
             out(ind) = u_(ind);
         }
-        return error/(n_*n_*n_);
+        return error/(n_*n_);
     }
 };
 

@@ -1,3 +1,7 @@
+/**
+ * Monotone scheme to solve the mean curvature PDEs in 3D Cartesian grids.
+*/
+
 #ifndef CURVATURE3D_H
 #define CURVATURE3D_H
 

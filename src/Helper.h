@@ -113,8 +113,8 @@ public:
     }
     void initialize(const int n){
         n_ = n;
-        data_ = new double[n_*n_*n_];
-        for(int ind=0;ind<n_*n_*n_;++ind){
+        data_ = new double[n_*n_];
+        for(int ind=0;ind<n_*n_;++ind){
             data_[ind]=0.0;
         }
     }
@@ -126,32 +126,32 @@ public:
         n_    = n;
     }
     #ifdef _DEBUG
-        inline double&  operator()(const int k, const int i, const int j){
-            int ind = k*n_*n_+i*n_+j;
-            assertm(ind>=0 && ind<n_*n_*n_, "out of bound");
-            return *(data_ + k*n_*n_+i*n_+j);
+        inline double&  operator()(const int i, const int j){
+            int ind = i*n_+j;
+            assertm(ind>=0 && ind<n_*n_, "out of bound");
+            return *(data_ + i*n_+j);
         };
-        inline const double&  operator()(const int k, const int i, const int j) const{
-            int ind = k*n_*n_+i*n_+j;
-            assertm(ind>=0 && ind<n_*n_*n_, "out of bound");
-            return *(data_ + k*n_*n_+i*n_+j);
+        inline const double&  operator()(const int i, const int j) const{
+            int ind = i*n_+j;
+            assertm(ind>=0 && ind<n_*n_, "out of bound");
+            return *(data_ + i*n_+j);
         };
 
         inline double&  operator()(const int ind){
-            assertm(ind>=0 && ind<n_*n_*n_, "out of bound");
+            assertm(ind>=0 && ind<n_*n_, "out of bound");
             return *(data_ + ind);
         };
         inline const double&  operator()(const int ind) const{
-            assertm(ind>=0 && ind<n_*n_*n_, "out of bound");
+            assertm(ind>=0 && ind<n_*n_, "out of bound");
             return *(data_ + ind);
         };
     #else
-        inline double&  operator()(const int k, const int i, const int j){
-            return *(data_ + k*n_*n_+i*n_+j);
+        inline double&  operator()(const int i, const int j){
+            return *(data_ + i*n_+j);
         };
-        inline const double&  operator()(const int k, const int i, const int j) const
+        inline const double&  operator()(const int i, const int j) const
         {
-        return *(data_ + k*n_*n_+i*n_+j);
+        return *(data_ + i*n_+j);
         };
 
         inline double&  operator()(const int ind)
