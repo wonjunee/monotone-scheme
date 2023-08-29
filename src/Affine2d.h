@@ -38,7 +38,7 @@ public:
     DoubleArray2D f_; // used for computing the solution of the PDE
     std::vector<double> stencils_norm_; // the vector of norms of the stencils
     std::vector< std::vector<int> > stencils_; // vector of stencils ex: {{0,0,1}, {0,1,1}, ... }
-
+    std::vector<double> errors_; // the vector of size n_*n_ that will contain the error at each grid point
     int n_; // size of the grid n_ x n_ x n_
     int st_size_; // stencil size 1,2, or 3
     int st_N_; // the number of elements in stencils
@@ -73,6 +73,9 @@ public:
         int *stencils                = static_cast<int *>(stencils_buf.ptr);
         st_N_ = stencils_buf.shape[0];
 
+        // errors initialize
+        errors_.resize(n_*n_);
+
         // resizing stencils and stencils norm
         stencils_.resize(st_N_);
         stencils_norm_.resize(st_N_);
@@ -86,7 +89,7 @@ public:
                 stencils_[it][it1] = stencils[it*dim + it1];
                 norm_val += stencils_[it][it1] * stencils_[it][it1];
             }
-            stencils_norm_[it] = sqrt(norm_val);
+            stencils_norm_[it] = sqrt(norm_val)/n_;
         }
 
         py::print("Constructor finished. n: ", n_, "stencil size: ", st_size, "number of stencils: ", stencils_.size());
@@ -106,7 +109,7 @@ public:
      * @param i,j: the indices i: y-aixs j: x-axis
      * @return true if stencils_[d] is in subdifferential set.
     */
-    bool p_in_subdifferential(const DoubleArray2D& utmp, const size_t& d, const double c, const int i, const int j) const{
+    bool p_in_subdifferential(const DoubleArray2D& utmp, const int& d, const double c, const int i, const int j) const{
         int ip = i - stencils_[d][1];
         int jp = j - stencils_[d][0];
         if(check_inside_domain(ip,jp)){
@@ -115,14 +118,13 @@ public:
             }
         }
 
-        for(int it=0, N_it=stencils_.size(); it<N_it; ++it){ // dir = {x, y}
-            int ip = i - stencils_[it][1];
-            int jp = j - stencils_[it][0];
+        for(int it=d-st_N_/4+1+st_N_, N_it=d+st_N_/4-1+st_N_; it<N_it; ++it){ // dir = {x, y}
+            int it0 = it % st_N_;
+            int ip = i - stencils_[it0][1];
+            int jp = j - stencils_[it0][0];
             if(check_inside_domain(ip,jp)){
-                if(dot(stencils_[it], stencils_[d]) > 0){
-                    if(utmp(ip,jp) > c){
-                        return false;
-                    }
+                if(utmp(ip,jp) > c){
+                    return false;
                 }
             }
         }
@@ -135,7 +137,7 @@ public:
      * with respect to the direction q at the location x=(k,i,j).
      * It will return $-\Delta u = (-u(x-q) + 2u(x) - u(x+q))/h^2$.
     */
-    double compute_second_derivative_given_p(const DoubleArray2D& utmp, vector<int>& q, const double c, const int i, const int j) const{
+    double compute_second_derivative_given_p(const DoubleArray2D& utmp, vector<int>& q, const double c, const int i, const int j, const int d) const{
         int im = i-q[1]; int ip = i+q[1];
         int jm = j-q[0]; int jp = j+q[0];
         double umm = 0;
@@ -147,7 +149,8 @@ public:
         if(check_inside_domain(im,jm)){
             umm = utmp(im,jm);
         }
-        double h2 = dot(q,q)/(n_*n_); // norm of p : |p| * (dx^2)
+        // double h2 = dot(q,q)/(n_*n_); // norm of p : |p| * (dx^2)
+        double h2 = stencils_norm_[d] * stencils_norm_[d];
         return (- umm + 2.0 * c - upp) / h2;
     }
 
@@ -156,34 +159,40 @@ public:
      * with respect to the direction q at the location x=(k,i,j).
      * It will return $| \nabla u(x) | = (u(x) - u(x-p))/|p|$.
     */
-    double compute_first_derivative_given_p(const DoubleArray2D& utmp, vector<int>& p, const double c, const int i, const int j) const{
+    double compute_first_derivative_given_p(const DoubleArray2D& utmp, vector<int>& p, const double c, const int i, const int j, const int d) const{
         int im = i-p[1];
         int jm = j-p[0];
         double um = 0;
         if(check_inside_domain(im,jm)){
             um = utmp(im,jm);
         }
-        double h = sqrt(dot(p,p))/n_; // norm of p : |p| * dx
+        // double h = sqrt(dot(p,p))/n_; // norm of p : |p| * dx
+        double h = stencils_norm_[d];
         return (c - um) / h;
     }
 
     /**
      * calculating affine flows
+     * @param utmp : u^{(k)} values of u at the previous iteration
+     * @param f    : the right hand side function
+     * @param c    : u(x) computed for u^{(k+1)}. u(x) -> S_h(u^{(k)}, u(x), x)
+     * @param ind  : the index for the location x. i = ind/n, j = ind%n
+     * @return S_h(u^{(k)}, c, x)
      */
-    double calc_val_affine(const DoubleArray2D& utmp, const DoubleArray2D& f, const double c, const int ind){
+    double calc_u(const DoubleArray2D& utmp, const DoubleArray2D& f, const double c, const int ind){
         double max_val = -1e4;
         int i = ind / n_;
         int j = ind % n_;
 
-        for(size_t d=0, N_d=stencils_.size(); d<N_d; ++d){ // dir = {x, y}
+        for(int d=0, N_d=stencils_.size(); d<N_d; ++d){ // dir = {x, y}
             // choose a eligible vector from stencils
             if(p_in_subdifferential(utmp,d,c,i,j)){
                 vector<int> p = stencils_[d];
                 vector<int> q = {-p[1], p[0]}; // q is perpendicular to p
 
-                double first_deriv  = compute_first_derivative_given_p(utmp,  p, c, i, j);
-                double second_deriv = compute_second_derivative_given_p(utmp, q, c, i, j);
-                double val = first_deriv * first_deriv * second_deriv;
+                double first_deriv  = compute_first_derivative_given_p(utmp,  p, c, i, j, d);
+                double second_deriv = compute_second_derivative_given_p(utmp, q, c, i, j, d);
+                double val = first_deriv * first_deriv * fmax(0,second_deriv);
                 if(val > max_val){ max_val = val; }
             }
         }
@@ -208,12 +217,13 @@ public:
         double a = 0.0;
         double b = 1.0;
         double c = (a+b)*0.5;
-        val = 0;
+        val = 100;
         for(size_t i_bi=0; i_bi<max_it_bisection_; ++i_bi){
-            val = calc_val_affine(utmp, f, c, ind);
-            if(val > 0){ b = c; }
-            else       { a = c; }
+            double uval = calc_u(utmp, f, c, ind);
+            if(uval > 0){ b = c; }
+            else        { a = c; }
             c = (a+b)*0.5;
+            val = fmin(val, fabs(uval));
         }
         return c;
     }
@@ -227,15 +237,27 @@ public:
      * @param it_end : ending index
      * @return error and u_ will be updated.
     */
-    double compute_for_loop_affine(const int it_start, const int it_end){
-        double error = 0;
-        double val = 0;
+    void compute_for_loop_affine(const int it_start, const int it_end){
+        double val   = 0;
         for(int ind=it_start;ind<it_end;++ind){
             u_(ind) = calc_u_bisection_affine(u_, f_, ind, val);
-            if(fabs(val) < 1){
-                error += fabs(val);
-            }
+            errors_[ind] = fabs(val);
         }
+    }
+
+    /**
+     * Computing error using errors_ vector
+     * error = 1/n \sum_{x \in \mathcal{X}_h} |S_h(u,u(x),x)|
+     * @return error of the algorithm
+    */
+    double compute_error(){
+        const double ratio_error = 1.0;
+        sort(errors_.begin(), errors_.end());
+        double error = 0;
+        for(int i=0;i<n_*n_*ratio_error;++i){
+            error += errors_[i];
+        }
+        error /= n_*n_*ratio_error;
         return error;
     }
 
@@ -276,21 +298,17 @@ public:
         }
            
         // run the iterations  
-        // double error = compute_for_loop_affine(utmp,f,0,n_*n_);
-        double error = 0;
-        std::vector<std::future<double> > changes(THREADS_);    
+        std::vector<std::future<void> > changes(THREADS_);    
         for(int th=0;th<THREADS_;++th){  
             changes[th] = std::async(std::launch::async, &Affine2DSolver::compute_for_loop_affine, this, static_cast<int>(th*n_*n_/THREADS_), static_cast<int>((th+1)*n_*n_/THREADS_));
         }
         for(int th=0;th<THREADS_;++th){
-            error += changes[th].get();
+            changes[th].get();
         } 
         for(int ind=0;ind<n_*n_;++ind){
             out_dbl[ind] = u_(ind);
         }
-        return error/(n_*n_);
+        return compute_error();
     }
 };
-
-
 #endif
