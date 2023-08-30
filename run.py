@@ -3,7 +3,7 @@ import numpy as np
 import time
 import tqdm
 import matplotlib.pyplot as plt
-from monotone import Tukey2DSolver, interpolate
+from monotone import Tukey2DSolver
 
 os.system("bash compile.sh")
 

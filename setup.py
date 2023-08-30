@@ -12,7 +12,7 @@ ext_modules = [
     Pybind11Extension("monotone",
         ["src/main.cpp"],
         define_macros      = [('VERSION_INFO', __version__)],
-        extra_compile_args = ['-std=c++17'],
+        extra_compile_args = ['-std=c++14'],
         ),
 ]
 
