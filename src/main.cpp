@@ -55,7 +55,7 @@ PYBIND11_MODULE(monotone, m) {
     // optional module docstring
     m.doc() = "C++ wrapper for monotone discretization code in Cartesian grids setting";
 
-    // m.def("interpolate", &interpolate);
+    m.def("interpolate", &interpolate);
 
     py::class_<Tukey2DSolver>(m, "Tukey2DSolver") 
         .def(py::init<py::array_t<double> &, int>())

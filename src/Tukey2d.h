@@ -70,7 +70,7 @@ public:
         f_.initialize(f_dbl,n_);
         u_.initialize(n_);
 
-        // initialize vectors
+        // initialize error vector
         errors_.resize(n_*n_);
 
         // resizing stencils and stencils norm
