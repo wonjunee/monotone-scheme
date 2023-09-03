@@ -9,7 +9,7 @@ __version__ = "0.0.1"
 
 
 ext_modules = [
-    Pybind11Extension("monotone",
+    Pybind11Extension("Monotone",
         ["src/main.cpp"],
         define_macros      = [('VERSION_INFO', __version__)],
         extra_compile_args = ['-std=c++14'],
@@ -17,7 +17,7 @@ ext_modules = [
 ]
 
 setup(
-    name="monotone",
+    name="Monotone",
     version=__version__,
     author="Wonjun Lee",
     author_email="wlee@ucla.edu",

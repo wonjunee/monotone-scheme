@@ -3,7 +3,7 @@ import numpy as np
 import time
 import tqdm
 import matplotlib.pyplot as plt
-from monotone import Tukey2DSolver, Eikonal2DSolver
+from Monotone import Tukey2DSolver, Eikonal2DSolver
 
 os.system("bash compile.sh")
 
