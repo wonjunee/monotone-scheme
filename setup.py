@@ -21,7 +21,7 @@ setup(
     version=__version__,
     author="Wonjun Lee",
     author_email="wlee@ucla.edu",
-    description="Python wrapper for the monotone discretization problem in 3D Cartesian grids (join work with Jeff Calder (UMN))",
+    description="Python wrapper for the monotone discretization problem in 2D and 3D Cartesian grids (join work with Jeff Calder (UMN))",
     long_description="""
         (the details will be added)
         """,
