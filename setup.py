@@ -28,6 +28,16 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/wonjunee/monotone-scheme",
     ext_modules=ext_modules,
+    packages=['Monotone'],
     cmdclass={"build_ext": build_ext},
+    classifiers=[
+                "Programming Language :: Python :: 3",
+                "License :: OSI Approved :: MIT License",
+                "Operating System :: OS Independent"],
+    install_requires=[  'numpy', 
+                        'scipy', 
+                        'scikit-learn', 
+                        'matplotlib'],
+    python_requires='>=3.6',
     zip_safe=False,
 )
