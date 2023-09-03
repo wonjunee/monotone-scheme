@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/iostream.h>
 #include <pybind11/numpy.h>
+#include "Eikonal2d.h"
 #include "Tukey2d.h"
 #include "Affine2d.h"
 #include "Curvature2d.h"
@@ -56,6 +57,10 @@ PYBIND11_MODULE(monotone, m) {
     m.doc() = "C++ wrapper for monotone discretization code in Cartesian grids setting";
 
     m.def("interpolate", &interpolate);
+ 
+    py::class_<Eikonal2DSolver>(m, "Eikonal2DSolver") 
+        .def(py::init<py::array_t<double> &, int>())
+        .def("perform_one_iteration", &Eikonal2DSolver::perform_one_iteration);
 
     py::class_<Tukey2DSolver>(m, "Tukey2DSolver") 
         .def(py::init<py::array_t<double> &, int>())
@@ -74,5 +79,3 @@ PYBIND11_MODULE(monotone, m) {
         .def(py::init<py::array_t<double> &, py::array_t<int> &, int>())
         .def("perform_one_iteration", &Curv3DSolver::perform_one_iteration);
 }
-
-

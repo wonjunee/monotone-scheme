@@ -1,9 +1,9 @@
 /**
- * Monotone scheme to solve the Tukey depth eikonal equation in 2D Cartesian grids.
+ * Monotone scheme to solve the eikonal equation in 2D Cartesian grids.
 */
 
-#ifndef TUKEY2D_H
-#define TUKEY2D_H
+#ifndef EIKONAL2D_H
+#define EIKONAL2D_H
 
 #include <pybind11/pybind11.h>
 #include <pybind11/iostream.h>
@@ -29,7 +29,7 @@ namespace py = pybind11;
 using namespace std;
 
 
-class Tukey2DSolver{
+class Eikonal2DSolver{
 public:
     /**
      * Initializing member variables
@@ -45,31 +45,26 @@ public:
     int THREADS_; // # of threads in CPU
     double max_it_bisection_; // max iteration of bisection method
 
-    std::vector<std::vector<double> > rhs_integral_vec_;
-
     std::vector<std::vector<double> > ind_vec_;
     
     /**
      * initializer
      * @param n_ : grid size of x-axis
      */
-    Tukey2DSolver(int n)
-    : n_(n), st_size_(0){
-        THREADS_ = get_num_threads(n);
+    Eikonal2DSolver(int n)
+    : n_(n), st_size_(0), THREADS_((int) fmin(20,std::thread::hardware_concurrency())){
     }
 
     /**
      * initializer
      * @param n_ : grid size of x-axis
      */
-    Tukey2DSolver(py::array_t<double>& f_np, int st_size): st_size_(st_size){
-    
+    Eikonal2DSolver(py::array_t<double>& f_np, int st_size)
+    : st_size_(st_size), THREADS_((int) fmin(20,std::thread::hardware_concurrency())){
         py::buffer_info f_buf = f_np.request();
         double *f_dbl         = static_cast<double *>(f_buf.ptr);
 
         n_ = f_buf.shape[0];
-
-        THREADS_ = get_num_threads(n_);
 
         // initialize u_ and f_
         f_.initialize(f_dbl,n_);
@@ -111,61 +106,10 @@ public:
         sort(ind_vec_.begin(), ind_vec_.end(), [](const std::vector<double>& a, const std::vector<double>& b) {return a[1] < b[1]; });
 
         py::print("Constructor finished. n: ", n_, "stencil size: ", st_size, "number of stencils: ", N_stencils_, "number of threads: ", THREADS_);
-
-
-        // Initialize the right hand side integral term
-        initialize_rhs_integral_vec();
     }
 
-    virtual ~Tukey2DSolver(){
+    virtual ~Eikonal2DSolver(){
         if(u_.data_ !=  nullptr) delete [] u_.data_;
-    }
-
-    void initialize_rhs_integral_vec(){
-        rhs_integral_vec_.resize(n_*n_);
-        for(int ind=0;ind<n_*n_;++ind){
-            rhs_integral_vec_[ind].resize(N_stencils_);
-            int i = ind/n_;
-            int j = ind%n_;
-            for(int d=0; d<N_stencils_; ++d){
-                /**
-                * compute int_{(y-x)\cdot p = 0} \rho(y) dS(y) = 0
-                * dir = orthogonal to p
-                */ 
-                vector<double> p = dir_vec_[d];
-                vector<double> dir = {-p[1], p[0]};
-
-                double fval = 0;                
-                double new_i = i, new_j = j;
-
-                /** forward direction */
-                while(check_inside_domain(round(new_i), round(new_j))){
-                    fval += f_(round(new_i)*n_+round(new_j));
-                    new_j += dir[0];
-                    new_i += dir[1];
-                }
-
-                new_j = j - dir[0]; new_i = i - dir[1];
-
-                /** reverse direction */
-                while(check_inside_domain(round(new_i), round(new_j))){
-                    fval += f_(round(new_i)*n_+round(new_j));
-                    new_j -= dir[0];
-                    new_i -= dir[1];
-                }
-                fval *= dir_norm_vec_[d];
-                rhs_integral_vec_[ind][d] = fval;
-            }
-        }
-    }
-
-    /** compute the number of threads to use for the algorithm */
-    inline int get_num_threads(const int n) const{
-        int num_threads = std::thread::hardware_concurrency();
-        while(n % num_threads != 0){
-            --num_threads;
-        }
-        return num_threads;
     }
 
     /**
@@ -252,7 +196,7 @@ public:
                 /** compute nabla u = u(x) - u(x-p) / |p| */ 
                 double uback = uval_vec[d];
                 double Du_val = (c - uback) / h_dir;
-                double fval = rhs_integral_vec_[ind][d];
+                double fval = f(i,j);                
                 double val = Du_val - fval;
                 if(val > max_val){ max_val = val; }
             }
@@ -386,7 +330,7 @@ public:
         // run the iterations  
         std::vector<std::future<void> > changes(THREADS_);    
         for(int th=0;th<THREADS_;++th){  
-            changes[th] = std::async(std::launch::async, &Tukey2DSolver::compute_for_loop, this, static_cast<int>(th*n_*n_/THREADS_), static_cast<int>((th+1)*n_*n_/THREADS_));
+            changes[th] = std::async(std::launch::async, &Eikonal2DSolver::compute_for_loop, this, static_cast<int>(th*n_*n_/THREADS_), static_cast<int>((th+1)*n_*n_/THREADS_));
         }
         for(int th=0;th<THREADS_;++th){
             changes[th].get();
@@ -444,7 +388,7 @@ public:
         // run the iterations  
         std::vector<std::future<void> > changes(THREADS_);    
         for(int th=0;th<THREADS_;++th){  
-            changes[th] = std::async(std::launch::async, &Tukey2DSolver::compute_for_loop_with_bdry, this, eps, static_cast<int>(th*n_*n_/THREADS_), static_cast<int>((th+1)*n_*n_/THREADS_));
+            changes[th] = std::async(std::launch::async, &Eikonal2DSolver::compute_for_loop_with_bdry, this, eps, static_cast<int>(th*n_*n_/THREADS_), static_cast<int>((th+1)*n_*n_/THREADS_));
         }
         for(int th=0;th<THREADS_;++th){
             changes[th].get();
