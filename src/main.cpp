@@ -52,9 +52,9 @@ void interpolate(py::array_t<double>& u_np, py::array_t<double>& u_small_np){
     }
 }
 
-PYBIND11_MODULE(Monotone, m) {
+PYBIND11_MODULE(MonotoneScheme, m) {
     // optional module docstring
-    m.doc() = "C++ wrapper for monotone discretization code in Cartesian grids setting";
+    m.doc() = "C++ wrapper for monotone discretization code in 2D and 3D Cartesian grids setting";
 
     m.def("interpolate", &interpolate);
  

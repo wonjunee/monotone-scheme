@@ -9,7 +9,7 @@ __version__ = "0.0.1"
 
 
 ext_modules = [
-    Pybind11Extension("Monotone",
+    Pybind11Extension("MonotoneScheme",
         ["src/main.cpp"],
         define_macros      = [('VERSION_INFO', __version__)],
         extra_compile_args = ['-std=c++14'],
@@ -17,7 +17,7 @@ ext_modules = [
 ]
 
 setup(
-    name="Monotone",
+    name="MonotoneScheme",
     version=__version__,
     author="Wonjun Lee",
     author_email="wlee@ucla.edu",
@@ -28,7 +28,6 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/wonjunee/monotone-scheme",
     ext_modules=ext_modules,
-    packages=['Monotone'],
     cmdclass={"build_ext": build_ext},
     classifiers=[
                 "Programming Language :: Python :: 3",
