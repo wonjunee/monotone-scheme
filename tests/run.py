@@ -5,6 +5,8 @@ import tqdm
 import matplotlib.pyplot as plt
 from Monotone import Tukey2DSolver, Eikonal2DSolver
 
+os.chdir('../')
+
 os.system("bash compile.sh")
 
 # make folder if not exists
@@ -35,7 +37,7 @@ def saving_fig(u, f, error, start_time, error_array, time_array, i, fig_title='f
     plt.savefig(f"{save_fig_path}/{fig_title}-{i}.png")
     
 # create an empty f
-n = 128
+n = 32
 # initializing f
 xx = np.linspace(0.5/n,1-0.5/n,n)
 X,Y = np.meshgrid(xx,xx)
@@ -44,7 +46,7 @@ f = np.zeros((n,n))
 # f[(np.abs(X-0.5)<0.4) & (np.abs(Y-0.5)<0.4)] = 1
 # f[(np.abs(X-0.5)<0.2) & (Y < 0.6)] = 0
 # f[((X-0.5)**2 + (Y-0.5)**2 <0.5**2)] = 1; f[((X-0.6)**2 + (Y-0.5)**2 <0.03**2)] = 0;
-# f[((X-0.3)**2 + (Y-0.3)**2 <0.22**2) | ((X-0.7)**2 + (Y-0.7)**2 <0.22**2)] = 1
+f[((X-0.3)**2 + (Y-0.3)**2 <0.22**2) | ((X-0.7)**2 + (Y-0.7)**2 <0.22**2)] = 1
 # f[((X-0.25)**2 + (Y-0.25)**2 <0.2**2) | ((X-0.25)**2 + (Y-0.75)**2 <0.2**2) | ((X-0.75)**2 + (Y-0.25)**2 <0.2**2) | ((X-0.75)**2 + (Y-0.75)**2 <0.2**2)] = 1
 # returning contiguous arrays in memory
 f = np.ascontiguousarray(f, dtype=np.float64)  # the right hand side function
@@ -62,7 +64,7 @@ tolerance= 1e-8
 
 # initialize the HJ solver
 # for stencil_size in [2, 5, 25, 100]:
-for stencil_size in [8]:
+for stencil_size in [2]:
     u = np.zeros((n,n))
     u = np.ascontiguousarray(u, dtype=np.float64)  # solution
     print(f"stencil size: {stencil_size}")
