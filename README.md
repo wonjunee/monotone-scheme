@@ -1,6 +1,10 @@
 # Monotone schemes for solving curvature motion PDEs
 
-## by Jeff Calder (UMN) and Wonjun Lee (UMN)
+## by Jeff Calder (UMN)  and Wonjun Lee (UMN)
+
+- Paper: [arXiv](.)
+- Jeff Calder: [website](https://www-users.cse.umn.edu/~jwcalder/)
+- Wonjun Lee: [website](https://wonjunee.github.io)
 
 ---
 # Outline
@@ -23,7 +27,7 @@ $$ |\nabla u(x)| = \int_{(y-x)\cdot \nabla u(x) = 0} \rho(y) dS(y), \quad x \in 
 ---
 # Tutorial
 
-## Prerequisite
+## Prerequisites
 
 - `pip`
 - `python >= 3.6`

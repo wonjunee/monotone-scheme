@@ -5,7 +5,7 @@ from pybind11 import get_cmake_dir
 
 import sys
 
-__version__ = "0.0.4"
+__version__ = "0.0.7"
 
 
 ext_modules = [
@@ -25,7 +25,7 @@ setup(
     version=__version__,
     author="Wonjun Lee",
     author_email="wlee@ucla.edu",
-    description="Python wrapper for the monotone discretization problem in 2D and 3D Cartesian grids (join work with Jeff Calder (UMN))",
+    description="Python wrapper for C++ codes for the monotone scheme for curvature motion PDEs",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/wonjunee/monotone-scheme",
