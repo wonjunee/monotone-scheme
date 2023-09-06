@@ -13,11 +13,12 @@ ext_modules = [
         ["src/main.cpp"],
         define_macros      = [('VERSION_INFO', __version__)],
         extra_compile_args = ['-std=c++14'],
+        include_dirs=["src/"],  # -I
         ),
 ]
 
 setup(
-    name="MonotoneScheme5",
+    name="MonotoneScheme",
     version=__version__,
     author="Wonjun Lee",
     author_email="wlee@ucla.edu",
