@@ -4,3 +4,4 @@
 *.so
 *.o
 *.eps
+.vscode/settings.json
