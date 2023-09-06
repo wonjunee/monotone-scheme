@@ -5,3 +5,6 @@
 *.o
 *.eps
 .vscode/settings.json
+.vscode/
+MonotoneScheme.egg-info/
+dist/
