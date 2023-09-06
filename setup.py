@@ -17,15 +17,16 @@ ext_modules = [
         ),
 ]
 
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
 setup(
     name="MonotoneScheme",
     version=__version__,
     author="Wonjun Lee",
     author_email="wlee@ucla.edu",
     description="Python wrapper for the monotone discretization problem in 2D and 3D Cartesian grids (join work with Jeff Calder (UMN))",
-    long_description="""
-        (the details will be added)
-        """,
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/wonjunee/monotone-scheme",
     ext_modules=ext_modules,
