@@ -2,3 +2,6 @@ numpy
 scipy
 matplotlib
 scikit-learn
+tqdm
+plotly
+ipython

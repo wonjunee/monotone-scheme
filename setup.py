@@ -5,7 +5,7 @@ from pybind11 import get_cmake_dir
 
 import sys
 
-__version__ = "0.0.9"
+__version__ = "0.0.11"
 
 
 ext_modules = [
@@ -38,7 +38,11 @@ setup(
     install_requires=[  'numpy', 
                         'scipy', 
                         'scikit-learn', 
-                        'matplotlib'],
+                        'matplotlib',
+                        'tqdm',
+                        'plotly',
+                        'ipython',
+                        'nbformat>=5'],
     python_requires='>=3.6',
     zip_safe=False,
 )
