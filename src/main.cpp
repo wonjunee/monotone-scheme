@@ -9,7 +9,7 @@
 
 namespace py = pybind11;
 
-void interpolate(py::array_t<double>& u_np, py::array_t<double>& u_small_np){
+void interpolate(py::array_t<double, py::array::c_style | py::array::forcecast> u_np, py::array_t<double, py::array::c_style | py::array::forcecast> u_small_np){
     py::buffer_info u_buf       = u_np.request();
     py::buffer_info u_small_buf = u_small_np.request();
     double *u_dbl       = static_cast<double *>(u_buf.ptr);

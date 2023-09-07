@@ -39,7 +39,7 @@ public:
      * @param f_np : numpy array for the right hand side function
      * @param st_size : the size of the stencil. if st_size=1 -> 8 stencils, st_size=2 -> 16 stencils
      */
-    Tukey2DSolver(py::array_t<double>& f_np, int st_size)
+    Tukey2DSolver(py::array_t<double, py::array::c_style | py::array::forcecast> f_np, int st_size)
     : Monotone2DSolver(f_np, st_size) {
         // resizing stencils and stencils norm
         N_stencils_ = st_size_ * 8;

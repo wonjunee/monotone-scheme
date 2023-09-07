@@ -56,7 +56,7 @@ public:
      * initializer
      * @param n_ : grid size of x-axis
      */
-    Curv3DSolver(py::array_t<double>& f_np, py::array_t<int>& stencils_np, int st_size)
+    Curv3DSolver(py::array_t<double, py::array::c_style | py::array::forcecast> f_np, py::array_t<int, py::array::c_style | py::array::forcecast> stencils_np, int st_size)
     : st_size_(st_size), THREADS_(std::thread::hardware_concurrency()){
         py::buffer_info f_buf = f_np.request();
         double *f_dbl         = static_cast<double *>(f_buf.ptr);
@@ -269,7 +269,7 @@ public:
      * @param out_np : numpy array coming from Python codes.
      * @return error value and out_np will be updated as well.
     */
-    double perform_one_iteration(py::array_t<double>& out_np){
+    double perform_one_iteration(py::array_t<double, py::array::c_style | py::array::forcecast> out_np){
 
         // keyboard interrupt
         if (PyErr_CheckSignals() != 0) throw py::error_already_set();

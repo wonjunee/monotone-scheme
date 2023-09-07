@@ -44,7 +44,7 @@ public:
      * @param stencils_np : numpy arry for the stencils
      * @param st_size : the size of the stencil. if st_size=1 -> 8 stencils, st_size=2 -> 16 stencils
      */
-    Curv2DSolver(py::array_t<double>& f_np, py::array_t<int>& stencils_np, int st_size)
+    Curv2DSolver(py::array_t<double, py::array::c_style | py::array::forcecast> f_np, py::array_t<int, py::array::c_style | py::array::forcecast> stencils_np, int st_size)
     : Monotone2DSolver(f_np, st_size) {
         // initizlie stencils_ from stencil numpy array
         py::buffer_info stencils_buf = stencils_np.request();

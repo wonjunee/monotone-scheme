@@ -59,7 +59,7 @@ public:
      * @param f_np : numpy array for the right hand side function
      * @param st_size : the size of the stencil. if st_size=1 -> 8 stencils, st_size=2 -> 16 stencils
      */
-    Monotone2DSolver(py::array_t<double>& f_np, int st_size)
+    Monotone2DSolver(py::array_t<double, py::array::c_style | py::array::forcecast> f_np, int st_size)
     : st_size_(st_size), THREADS_(std::thread::hardware_concurrency()){
         py::buffer_info f_buf = f_np.request();
         double *f_dbl         = static_cast<double *>(f_buf.ptr);
@@ -260,7 +260,7 @@ public:
      * @param out_np : numpy array coming from Python codes.
      * @return error value and out_np will be updated as well.
     */
-    double perform_one_iteration(py::array_t<double>& out_np){
+    double perform_one_iteration(py::array_t<double, py::array::c_style | py::array::forcecast> out_np){
 
         // keyboard interrupt
         if (PyErr_CheckSignals() != 0) throw py::error_already_set();
@@ -318,7 +318,7 @@ public:
      * @param eps    : boundary width to be used.
      * @return error value and out_np will be updated as well.
     */
-    double perform_one_iteration_with_bdry(py::array_t<double>& out_np, const double eps){
+    double perform_one_iteration_with_bdry(py::array_t<double, py::array::c_style | py::array::forcecast> out_np, const double eps){
 
         // keyboard interrupt
         if (PyErr_CheckSignals() != 0) throw py::error_already_set();
