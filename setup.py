@@ -42,6 +42,7 @@ setup(
                         'tqdm',
                         'plotly',
                         'ipython',
+                        'ipykernel',
                         'nbformat>=5'],
     python_requires='>=3.6',
     zip_safe=False,
