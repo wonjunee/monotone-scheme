@@ -70,10 +70,6 @@ public:
         py::print("Constructor finished. n: ", n_, "stencil size: ", st_size, "number of stencils: ", N_stencils_, "number of threads: ", THREADS_);
     }
 
-    virtual ~Tukey2DSolver(){
-        if(u_.data_ !=  nullptr) delete [] u_.data_;
-    }
-
     void initialize_rhs_integral_vec(){
         rhs_integral_vec_.resize(n_*n_);
         for(int ind=0;ind<n_*n_;++ind){

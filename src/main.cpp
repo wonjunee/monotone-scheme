@@ -78,4 +78,4 @@ PYBIND11_MODULE(MonotoneScheme, m) {
     py::class_<Curv3DSolver>(m, "Curv3DSolver") 
         .def(py::init<py::array_t<double> &, py::array_t<int> &, int>())
         .def("perform_one_iteration", &Curv3DSolver::perform_one_iteration);
-}
+} 

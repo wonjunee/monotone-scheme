@@ -69,11 +69,6 @@ public:
 
         py::print("Constructor finished. n: ", n_, "stencil size: ", st_size, "number of stencils: ", stencils_.size());
     }
-
-    virtual ~Curv2DSolver(){
-        if(u_.data_ !=  nullptr) delete [] u_.data_;
-    }
-
                     
     /**
      * Given a function u and a vector q, this function will return the second derivative 

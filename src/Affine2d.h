@@ -95,10 +95,6 @@ public:
         py::print("Constructor finished. n: ", n_, "stencil size: ", st_size, "number of stencils: ", stencils_.size());
     }
 
-    virtual ~Affine2DSolver(){
-        if(u_.data_ !=  nullptr) delete [] u_.data_;
-    }
-
     /**
      * In this function, given a displacement vector v=stencils_[d], it will check if it is 
      * eligible to be in the subdifferential set.

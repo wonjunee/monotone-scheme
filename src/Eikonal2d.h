@@ -65,10 +65,6 @@ public:
         py::print("Constructor finished. n: ", n_, "stencil size: ", st_size, "number of stencils: ", N_stencils_, "number of threads: ", THREADS_);
     }
 
-    ~Eikonal2DSolver(){
-        if(u_.data_ !=  nullptr) delete [] u_.data_;
-    }
-
     /**
      * calculating the value of the Tukey depth eikonal equation
      * \max_{p \in P^h} |\nabla u(x)| - \int_{p^\perp} \rho(y) dS(y)
