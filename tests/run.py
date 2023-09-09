@@ -78,7 +78,7 @@ for stencil_size in [2]:
 
     error = 1.0
     for i in tqdm.tqdm(range(1,max_iter+1)):
-        error = solver.perform_one_iteration(u)
+        error = solver.iterate(u)
         error_array.append(error)
         time_array.append(time.time() - start_time)
         # print(f"i: {i} error: {error:0.2e} time: {time.time() - start_time:0.2e} sec")

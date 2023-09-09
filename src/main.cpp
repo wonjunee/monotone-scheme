@@ -6,6 +6,7 @@
 #include "Affine2d.h"
 #include "Curvature2d.h"
 #include "Curvature3d.h"
+#include "EikonalGraph.h"
 
 namespace py = pybind11;
 
@@ -60,22 +61,33 @@ PYBIND11_MODULE(MonotoneScheme, m) {
  
     py::class_<Eikonal2DSolver>(m, "Eikonal2DSolver") 
         .def(py::init<py::array_t<double, py::array::c_style | py::array::forcecast>, int>())
-        .def("perform_one_iteration", &Eikonal2DSolver::perform_one_iteration);
+        .def("iterate", &Eikonal2DSolver::perform_one_iteration);
 
     py::class_<Tukey2DSolver>(m, "Tukey2DSolver") 
         .def(py::init<py::array_t<double, py::array::c_style | py::array::forcecast>, int>())
-        .def("perform_one_iteration", &Tukey2DSolver::perform_one_iteration)
-        .def("perform_one_iteration_with_bdry", &Tukey2DSolver::perform_one_iteration_with_bdry);
+        .def("iterate", &Tukey2DSolver::perform_one_iteration)
+        .def("iterate_with_bdry", &Tukey2DSolver::perform_one_iteration_with_bdry);
 
     py::class_<Affine2DSolver>(m, "Affine2DSolver") 
         .def(py::init<py::array_t<double, py::array::c_style | py::array::forcecast>, py::array_t<int, py::array::c_style | py::array::forcecast>, int>())
-        .def("perform_one_iteration", &Affine2DSolver::perform_one_iteration);
+        .def("iterate", &Affine2DSolver::perform_one_iteration);
 
     py::class_<Curv2DSolver>(m, "Curv2DSolver") 
         .def(py::init<py::array_t<double, py::array::c_style | py::array::forcecast>, py::array_t<int, py::array::c_style | py::array::forcecast>, int>())
-        .def("perform_one_iteration", &Curv2DSolver::perform_one_iteration);
+        .def("iterate", &Curv2DSolver::perform_one_iteration);
 
     py::class_<Curv3DSolver>(m, "Curv3DSolver") 
         .def(py::init<py::array_t<double, py::array::c_style | py::array::forcecast>, py::array_t<int, py::array::c_style | py::array::forcecast>, int>())
-        .def("perform_one_iteration", &Curv3DSolver::perform_one_iteration);
-} 
+        .def("iterate", &Curv3DSolver::perform_one_iteration);
+
+    py::class_<EikonalGraph>(m, "EikonalGraph")
+        .def(py::init<
+                py::array_t<double, py::array::c_style | py::array::forcecast>, 
+                py::array_t<double, py::array::c_style | py::array::forcecast>, 
+                py::array_t<int, py::array::c_style | py::array::forcecast>, 
+                py::array_t<int, py::array::c_style | py::array::forcecast>,
+                py::array_t<double, py::array::c_style | py::array::forcecast>, 
+                py::array_t<int, py::array::c_style | py::array::forcecast> 
+                    > () )
+        .def("iterate", &EikonalGraph::iterate);
+}
