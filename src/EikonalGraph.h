@@ -64,7 +64,6 @@ public:
                  py::array_t<int, py::array::c_style | py::array::forcecast> bdry_np)
     :delta_(0.4), tol_bis_(1e-4), max_it_bis_(40), THREADS_(std::thread::hardware_concurrency())
     {
-        THREADS_ = 1;
         py::buffer_info X_buf = X.request();
         py::buffer_info V_buf = V.request();
         py::buffer_info I_buf = I.request();
@@ -228,21 +227,6 @@ public:
     */
     double compute_value(const std::vector<double>& u, const double ux_i, const int x_i) const{
         double max_val = -100;
-        // for each neighborhood point
-        // for(int j=K_(x_i); j<K_(x_i+1); ++j){
-        //     int x_j = I_(j); // index of a neighborhood point 
-        //     // check if the neighbor point x_j is in subdifferential set
-        //     if(u[x_j] <= ux_i){
-        //         if(is_subdifferential(u, ux_i, x_i, x_j)){
-        //             // compute |\nabla u|
-        //             double uval = (ux_i - u[x_j])/V_(j);
-        //             // compute the right hand side
-        //             double fval = f_[x_i];
-        //             // double fval = compute_fval(f_, x_i, x_j);
-        //             max_val = fmax(max_val,  uval - fval);
-        //         }
-        //     }
-        // }
         for(int a=K_(x_i); a<K_(x_i+1); ++a){
             int x_a = I_(a); // index of a neighborhood point 
             // check if the neighbor point x_j is in subdifferential set
