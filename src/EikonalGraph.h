@@ -114,20 +114,28 @@ public:
 
         // initialize edge2edge vector
         edge2edge_.resize(m_);
-        for(int x_i=0;x_i<n_;++x_i){
-            for(int j=K_(x_i); j<K_(x_i+1); ++j){
-                int x_j=I_(j);
-                for(int k=K_(x_i); k<K_(x_i+1); ++k){
-                    int x_k=I_(k);
-                    if(dot(x_i, x_j, x_k) > 0){
-                        edge2edge_[j].push_back(k);
+        int count = 0;
+        for(int x_0=0;x_0<n_;++x_0){
+            double delta = 0;
+            for(int a=K_(x_0); a<K_(x_0+1); ++a){
+                delta = fmax(delta, V_(a));
+            }
+            delta *= delta_;
+            for(int a=K_(x_0); a<K_(x_0+1); ++a){
+                int x_a=I_(a);
+                for(int b=K_(x_0); b<K_(x_0+1); ++b){
+                    if(V_(b) >= delta){
+                        int x_b=I_(b);
+                        if(dot(x_0, x_a, x_b) > 0){
+                            edge2edge_[a].push_back(b);
+                            count++;
+                        }
                     }
                 }
             }
         }
 
-
-        py::print("interior:", interior_points.size(), "threads: ", THREADS_);    
+        py::print("interior:", interior_points.size(), "threads: ", THREADS_, "count:", count);
 
 
     }
@@ -190,21 +198,12 @@ public:
      * @return boolean
      */
     bool is_subdifferential_with_edge2edge(const std::vector<double>& u, const double ux_i, const int x_i, const int a) const{
-        double delta = 0;
-        for(int k=K_(x_i); k<K_(x_i+1); ++k){
-            delta = fmax(delta, V_(k));
-        }
-        delta *= delta_;
-
         // for each neighborhood point of x_i, get x_b such that (x_b - x_i) \cdot (x_a - x_i) > 0
         for(int b=0,N=edge2edge_[a].size();b<N;++b){
-            // check if distance > delta_
-            if(V_(b) >= delta){
-                int x_b = I_(b);
-                // check if u is smaller at x_k. if small then return false
-                if(ux_i < u[x_b]){
-                    return false;
-                }
+            int x_b = I_(edge2edge_[a][b]);
+            // check if u is smaller at x_k. if small then return false
+            if(ux_i < u[x_b]){
+                return false;
             }
         }
         return true;
@@ -257,7 +256,6 @@ public:
                 }
             }
         }
-        // py::print("---- done ----");
         return max_val;
     }
     

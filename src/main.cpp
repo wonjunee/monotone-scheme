@@ -91,3 +91,8 @@ PYBIND11_MODULE(MonotoneScheme, m) {
                     > () )
         .def("iterate", &EikonalGraph::iterate);
 }
+
+
+
+
+
