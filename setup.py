@@ -5,11 +5,10 @@ from pybind11 import get_cmake_dir
 
 import sys
 
-__version__ = "0.0.13"
-
+__version__ = "0.0.15"
 
 ext_modules = [
-    Pybind11Extension("MonotoneScheme",
+    Pybind11Extension("monotonescheme",
         ["src/main.cpp"],
         define_macros      = [('VERSION_INFO', __version__)],
         include_dirs=["src/"],  # -I
@@ -20,7 +19,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="MonotoneScheme",
+    name="monotonescheme",
     version=__version__,
     author="Wonjun Lee",
     author_email="wlee@ucla.edu",
@@ -42,7 +41,8 @@ setup(
                         'plotly',
                         'ipython',
                         'ipykernel',
-                        'nbformat>=5'],
+                        'nbformat>=5',
+                        'graphlearning==1.2.1'],
     python_requires='>=3.6',
     zip_safe=False,
 )

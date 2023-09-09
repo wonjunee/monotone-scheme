@@ -5,3 +5,6 @@ scikit-learn
 tqdm
 plotly
 ipython
+ipykernel
+nbformat>=5
+graphlearning

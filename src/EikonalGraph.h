@@ -45,7 +45,6 @@ public:
     MyArray<double> f_; // [n_] the right hand side function
     MyArray<int>    bdry_; // indices of boundary points
     std::vector<std::vector<double> > ind_vec_;
-
     std::vector<std::vector<int> > edge2edge_; // for each index of X, contains a vector of indices such that x \cdot y > 0
     
     /**
