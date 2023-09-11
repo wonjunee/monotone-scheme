@@ -19,16 +19,20 @@ $$
 $$
 ### Mean curvature PDE
 $$
-\begin{align*} |\nabla u(x)|\kappa(x) &= f(x), && x \in \Omega \\
- x &= 0, && x \in \partial \Omega 
-\end{align*}$$
+\begin{align*} 
+    |\nabla u(x)|\kappa(x) &= f(x), && x \in \Omega \\
+    x &= 0, && x \in \partial \Omega 
+\end{align*}
+$$
 where $\kappa(x) = - \text{div}\left( \frac{\nabla u}{|\nabla u|} \right)$ is the mean curvature of the level set surface of $u$ passing through $x$.
 
 ### Affine flows PDE
 $$
-\begin{align*} |\nabla u(x)|\kappa(x)_+^{\alpha} &= f(x), && x \in \Omega \\
- x &= 0, && x \in \partial \Omega 
-\end{align*}$$
+\begin{align*} 
+    |\nabla u(x)|\kappa(x)_+^{\alpha} &= f(x), && x \in \Omega \\
+    x &= 0, && x \in \partial \Omega 
+\end{align*}
+$$
 where $\alpha \in (0,1]$ is a constant depending on the dimension $d$ and $(t)_+ := \max(0,t)$.
 
 ### Tukey Depth
