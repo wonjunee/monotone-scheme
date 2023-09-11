@@ -1,12 +1,14 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/iostream.h>
 #include <pybind11/numpy.h>
+#include <string>
 #include "Eikonal2d.h"
 #include "Tukey2d.h"
 #include "Affine2d.h"
 #include "Curvature2d.h"
 #include "Curvature3d.h"
 #include "EikonalGraph.h"
+#include "TukeyGraph.h"
 
 namespace py = pybind11;
 
@@ -90,10 +92,16 @@ PYBIND11_MODULE(monotonescheme, m) {
                 py::array_t<int, py::array::c_style | py::array::forcecast> 
                     > () )
         .def("iterate", &EikonalGraph::iterate);
+
+    py::class_<TukeyGraph>(m, "TukeyGraph")
+        .def(py::init<
+                py::array_t<double, py::array::c_style | py::array::forcecast>, 
+                py::array_t<double, py::array::c_style | py::array::forcecast>, 
+                py::array_t<int, py::array::c_style | py::array::forcecast>, 
+                py::array_t<int, py::array::c_style | py::array::forcecast>,
+                py::array_t<double, py::array::c_style | py::array::forcecast>, 
+                py::array_t<int, py::array::c_style | py::array::forcecast>,
+                std::string
+                    > () )
+        .def("iterate", &TukeyGraph::iterate);
 }
-
-
-
-
-
-
