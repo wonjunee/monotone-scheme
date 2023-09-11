@@ -36,7 +36,12 @@ $$
 where $\alpha \in (0,1]$ is a constant depending on the dimension $d$ and $(t)_+ := \max(0,t)$.
 
 ### Tukey Depth
-$$ |\nabla u(x)| = \int_{(y-x)\cdot \nabla u(x) = 0} \rho(y) dS(y), \quad x \in \Omega.$$
+$$ 
+\begin{align*}
+|\nabla u(x)| &= \int_{(y-x)\cdot \nabla u(x) = 0} \rho(y) dS(y), && x \in \Omega \\
+x &= 0, && x \in \partial \Omega 
+\end{align*}
+$$
 
 
 
