@@ -1,14 +1,14 @@
-# Monotone schemes for solving curvature motion PDEs
+# Monotone schemes for curvature-driven PDEs
 
 ## by Jeff Calder (UMN)  and Wonjun Lee (UMN)
 
 - Paper: [arXiv](.)
-- Jeff Calder: [website](https://www-users.cse.umn.edu/~jwcalder/)
-- Wonjun Lee: [website](https://wonjunee.github.io)
+- Jeff Calder, School of Mathematics, University of Minnesota: [website](https://www-users.cse.umn.edu/~jwcalder/)
+- Wonjun Lee, Institute for Mathematics and Its Applications, Uniersity of Minnesota: [website](https://wonjunee.github.io)
 
 ---
 # Outline
-This repository contains c++ and python codes for running the monotone algorithm to solve curvature motion PDEs. Here are list of PDEs that can be solved using this algorithm. Let $\Omega \subset \mathbb{R}^d$ be a bounded domain and $\partial \Omega$ be a boundary of $\Omega$.
+This repository contains c++ and python codes for running the monotone algorithm to solve curvature-driven PDEs. Here are list of PDEs that can be solved using this algorithm. Let $\Omega \subset \mathbb{R}^d$ be a bounded domain and $\partial \Omega$ be a boundary of $\Omega$.
 
 ### Eikonal equation
 $$

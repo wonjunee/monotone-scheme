@@ -5,7 +5,7 @@ from pybind11 import get_cmake_dir
 
 import sys
 
-__version__ = "0.0.15"
+__version__ = "0.0.16"
 
 ext_modules = [
     Pybind11Extension("monotonescheme",
@@ -23,7 +23,7 @@ setup(
     version=__version__,
     author="Wonjun Lee",
     author_email="wlee@ucla.edu",
-    description="Python wrapper for C++ codes for the monotone scheme for curvature motion PDEs",
+    description="Python wrapper for C++ codes for the monotone scheme for curvature-driven PDEs",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/wonjunee/monotone-scheme",
