@@ -7,8 +7,8 @@
 - Wonjun Lee, Institute for Mathematics and Its Applications, Uniersity of Minnesota: [website](https://wonjunee.github.io)
 
 ---
-# Outline
-This repository contains c++ and python codes for running the monotone algorithm to solve curvature-driven PDEs. Here are list of PDEs that can be solved using this algorithm. Let $\Omega \subset \mathbb{R}^d$ be an open bounded domain and $\partial \Omega$ be a boundary of $\Omega$.
+# Introduction
+This repository contains c++ and python codes for running the monotone algorithm to solve curvature-driven PDEs. Here are list of PDEs that can be solved using this algorithm. Let $\Omega = [0,1]^d$ be a domain in $\mathbb{R}^d$ and $\partial \Omega$ be a boundary of $\Omega$.
 
 ### Eikonal equation
 $$
@@ -63,7 +63,7 @@ Install the package by running the following command:
     pip install monotonescheme
 ```
 
-## Solving PDEs with a package
+## Running the codes
 
 You can find the example python notebook files in ``tests`` folder. The notebook files in the folder solves the following problems:
 
