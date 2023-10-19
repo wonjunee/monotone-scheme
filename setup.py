@@ -5,7 +5,7 @@ from pybind11 import get_cmake_dir
 
 import sys
 
-__version__ = "0.0.16"
+__version__ = "0.0.17"
 
 ext_modules = [
     Pybind11Extension("monotonescheme",
@@ -42,7 +42,7 @@ setup(
                         'ipython',
                         'ipykernel',
                         'nbformat>=5',
-                        'graphlearning==1.2.1'],
+                        'graphlearning'],
     python_requires='>=3.6',
     zip_safe=False,
 )
