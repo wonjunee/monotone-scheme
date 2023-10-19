@@ -2,7 +2,7 @@
 
 ## by Jeff Calder (UMN)  and Wonjun Lee (UMN)
 
-- Paper: [arXiv](.)
+- Paper: [arXiv](https://arxiv.org/abs/2310.08450)
 - Jeff Calder, School of Mathematics, University of Minnesota: [website](https://www-users.cse.umn.edu/~jwcalder/)
 - Wonjun Lee, Institute for Mathematics and Its Applications, Uniersity of Minnesota: [website](https://wonjunee.github.io)
 
@@ -58,9 +58,36 @@ Follow this link to see the instruction for the installation of `pip`: [https://
 
 ## Installing the package
 
-First install the package by running the following command:
+Install the package by running the following command:
 ```
-    pip install MonotoneScheme
+    pip install monotonescheme
 ```
 
-(TO BE CONTINUED)
+## Solving PDEs with a package
+
+You can find the example python notebook files in ``tests`` folder. The notebook files in the folder solves the following problems:
+
+1. Affine flows in 2D Cartesian grid. 
+
+- tests/affine_PDE_2D.ipynb
+
+![Alt text](figures/affine2d.png)
+
+2. Tukey depth eikonal equation in 2D Cartesian grid.
+
+- tests/tukey_PDE_2D.ipynb
+
+![Alt text](figures/tukey2d.png)
+
+3. Motion by curvature PDE in 3D Cartesian grid.
+
+- tests/curvature_PDE_3D.ipynb
+
+![Alt text](figures/curvature3d.png)
+
+4. Eikonal equation and Tukey depth eikonal equation in unstructure grids
+
+- tests/Eikonal_PDE_graph.ipynb
+- tests/tukey_PDE_graph.ipynb
+
+![Alt text](figures/point_cloud.png)
