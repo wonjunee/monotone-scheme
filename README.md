@@ -86,7 +86,7 @@ You can find the example python script files and notebook files in ``tests`` fol
 - tests/curvature_PDE_3D.ipynb
 - tests/curvature_PDE_3D.py
 
-![Alt text](https://github.com/wonjunee/monotone-scheme/blob/v1/figures/curvature3d.png)
+![Alt text](https://github.com/wonjunee/monotone-scheme/blob/v1/figures/square-3d.png)
 
 4. Eikonal equation and Tukey depth eikonal equation in unstructure grids
 
