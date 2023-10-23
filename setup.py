@@ -5,7 +5,7 @@ from pybind11 import get_cmake_dir
 
 import sys
 
-__version__ = "0.0.17"
+__version__ = "0.0.18"
 
 ext_modules = [
     Pybind11Extension("monotonescheme",
