@@ -58,34 +58,36 @@ Install the package by running the following command:
 
 ## Running the codes
 
-You can find the example python script files and notebook files in ``tests`` folder. The notebook files in the folder solves the following problems:
+You can find the example python script files and notebook files in ``tests`` folder. The notebook files in the folder solve the following problems:
 
 1. Affine flows in 2D Cartesian grid. 
 
-- tests/affine_PDE_2D.ipynb
-- tests/affine_PDE_2D.py
+- [affine_PDE_2D.ipynb](https://github.com/wonjunee/monotone-scheme/blob/v1/tests/affine_PDE_2D.ipynb)
+- [affine_PDE_2D.py](https://github.com/wonjunee/monotone-scheme/blob/v1/tests/affine_PDE_2D.py)
 
 ![Alt text](https://github.com/wonjunee/monotone-scheme/blob/v1/figures/affine2d.png)
 
 2. Tukey depth eikonal equation in 2D Cartesian grid.
 
-- tests/tukey_PDE_2D.ipynb
-- tests/tukey_PDE_2D.py
+- [tukey_PDE_2D.ipynb](https://github.com/wonjunee/monotone-scheme/blob/v1/tests/tukey_PDE_2D.ipynb)
+- [tukey_PDE_2D.py](https://github.com/wonjunee/monotone-scheme/blob/v1/tests/tukey_PDE_2D.py)
 
 ![Alt text](https://github.com/wonjunee/monotone-scheme/blob/v1/figures/tukey2d.png)
 
 3. Motion by curvature PDE in 3D Cartesian grid.
 
-- tests/curvature_PDE_3D.ipynb
-- tests/curvature_PDE_3D.py
+- [curvature_PDE_3D.ipynb](https://github.com/wonjunee/monotone-scheme/blob/v1/tests/curvature_PDE_3D.ipynb)
+- [curvature_PDE_3D.py](https://github.com/wonjunee/monotone-scheme/blob/v1/tests/curvature_PDE_3D.py)
 
 ![Alt text](https://github.com/wonjunee/monotone-scheme/blob/v1/figures/square-3d.png)
 
-4. Eikonal equation and Tukey depth eikonal equation in unstructure grids
+4. Eikonal equation and Tukey depth eikonal equation in unstructured grids
 
-- tests/Eikonal_PDE_graph.ipynb
-- tests/tukey_PDE_graph.ipynb
-- tests/Eikonal_PDE_graph.py
-- tests/tukey_PDE_graph.py
+- Eikonal equations
+    - [Eikonal_PDE_graph.ipynb](https://github.com/wonjunee/monotone-scheme/blob/v1/tests/Eikonal_PDE_graph.ipynb)
+    - [Eikonal_PDE_graph.py](https://github.com/wonjunee/monotone-scheme/blob/v1/tests/Eikonal_PDE_graph.py)
+- Tukey depth eikonal equations
+    - [tukey_PDE_graph.ipynb](https://github.com/wonjunee/monotone-scheme/blob/v1/tests/tukey_PDE_graph.ipynb)
+    - [tukey_PDE_graph.py](https://github.com/wonjunee/monotone-scheme/blob/v1/tests/tukey_PDE_graph.py)
 
 ![Alt text](https://github.com/wonjunee/monotone-scheme/blob/v1/figures/point_cloud.png)
