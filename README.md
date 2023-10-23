@@ -72,7 +72,7 @@ You can find the example python script files and notebook files in ``tests`` fol
 - tests/affine_PDE_2D.ipynb
 - tests/affine_PDE_2D.py
 
-![Alt text](https://github.com/wonjunee/monotone-scheme/blob/v1/figures/affine2d.png/affine2d.png)
+![Alt text](https://github.com/wonjunee/monotone-scheme/blob/v1/figures/affine2d.png)
 
 2. Tukey depth eikonal equation in 2D Cartesian grid.
 
