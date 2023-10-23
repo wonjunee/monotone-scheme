@@ -79,7 +79,7 @@ You can find the example python script files and notebook files in ``tests`` fol
 - [curvature_PDE_3D.ipynb](https://github.com/wonjunee/monotone-scheme/blob/v1/tests/curvature_PDE_3D.ipynb)
 - [curvature_PDE_3D.py](https://github.com/wonjunee/monotone-scheme/blob/v1/tests/curvature_PDE_3D.py)
 - Example solution of a curvature PDE where $f=1$ on a cube in 3D domain.
-    - <img src="https://github.com/wonjunee/monotone-scheme/blob/v1/figures/square-3d.png" width="500">
+    - <img src="https://github.com/wonjunee/monotone-scheme/blob/v1/figures/square-3d.png" width="250">
 
 4. Eikonal equation and Tukey depth eikonal equation in unstructured grids
 
@@ -90,6 +90,5 @@ You can find the example python script files and notebook files in ``tests`` fol
     - [tukey_PDE_graph.ipynb](https://github.com/wonjunee/monotone-scheme/blob/v1/tests/tukey_PDE_graph.ipynb)
     - [tukey_PDE_graph.py](https://github.com/wonjunee/monotone-scheme/blob/v1/tests/tukey_PDE_graph.py)
 
-- Example solution of eikoanl equation where $f=1$ on a circular domain.
-
-    - <img src="https://github.com/wonjunee/monotone-scheme/blob/v1/figures/point_cloud.png" width="500">
+- Example solution of eikonal equation where $f=1$ on a circular domain.
+    - <img src="https://github.com/wonjunee/monotone-scheme/blob/v1/figures/point_cloud.png" width="250">
