@@ -12,20 +12,28 @@ This repository contains c++ and python codes for running the monotone algorithm
 
 ### Eikonal equation
 $$ |\nabla u(x)| = f(x),\quad  x \in \Omega $$
+
 $$ u(x) = 0,\quad  x \in \partial \Omega $$
 
 ### Mean curvature PDE
 $$|\nabla u(x)|\kappa(x) = f(x),\quad  x \in \Omega $$
+
 $$ u(x) = 0,\quad  x \in \partial \Omega $$
+
 where $\kappa(x) = - \text{div}\left( \frac{\nabla u}{|\nabla u|} \right)$ is the mean curvature of the level set surface of $u$ passing through $x$.
 
 ### Affine flows PDE
+
 $$|\nabla u(x)|\kappa(x)_+^{\alpha} = f(x),\quad  x \in \Omega $$
+
 $$u(x) = 0,\quad  x \in \partial \Omega $$
+
 where $\alpha \in (0,1]$ is a constant depending on the dimension $d$ and $(t)_+ := \max(0,t)$.
 
 ### Tukey Depth
+
 $$ |\nabla u(x)| = \int_{(y-x)\cdot \nabla u(x) = 0} \rho(y) dS(y),\quad  x \in \Omega $$
+
 $$ u(x) = 0,\quad  x \in \partial \Omega $$
 
 
