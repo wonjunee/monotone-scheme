@@ -72,21 +72,21 @@ You can find the example python script files and notebook files in ``tests`` fol
 - tests/affine_PDE_2D.ipynb
 - tests/affine_PDE_2D.py
 
-![Alt text](figures/affine2d.png)
+![Alt text](https://github.com/wonjunee/monotone-scheme/blob/v1/figures/affine2d.png/affine2d.png)
 
 2. Tukey depth eikonal equation in 2D Cartesian grid.
 
 - tests/tukey_PDE_2D.ipynb
 - tests/tukey_PDE_2D.py
 
-![Alt text](figures/tukey2d.png)
+![Alt text](https://github.com/wonjunee/monotone-scheme/blob/v1/figures/tukey2d.png)
 
 3. Motion by curvature PDE in 3D Cartesian grid.
 
 - tests/curvature_PDE_3D.ipynb
 - tests/curvature_PDE_3D.py
 
-![Alt text](figures/curvature3d.png)
+![Alt text](https://github.com/wonjunee/monotone-scheme/blob/v1/figures/curvature3d.png)
 
 4. Eikonal equation and Tukey depth eikonal equation in unstructure grids
 
@@ -95,4 +95,4 @@ You can find the example python script files and notebook files in ``tests`` fol
 - tests/Eikonal_PDE_graph.py
 - tests/tukey_PDE_graph.py
 
-![Alt text](figures/point_cloud.png)
+![Alt text](https://github.com/wonjunee/monotone-scheme/blob/v1/figures/point_cloud.png)
