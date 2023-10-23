@@ -8,7 +8,7 @@
 
 ---
 # Introduction
-This repository contains c++ and python codes for running the monotone algorithm to solve curvature-driven PDEs. Here are list of PDEs that can be solved using this algorithm. Let $\Omega = [0,1]^d$ be a domain in $\mathbb{R}^d$ and $\partial \Omega$ be a boundary of $\Omega$.
+This repository contains C++ and python codes for running the monotone algorithm to solve curvature-driven PDEs. Here are list of PDEs that can be solved using this algorithm. Let $\Omega = [0,1]^d$ be a domain in $\mathbb{R}^d$ and $\partial \Omega$ be a boundary of $\Omega$.
 
 ### Eikonal equation
 $$ |\nabla u(x)| = f(x),\quad  x \in \Omega $$
